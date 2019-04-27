@@ -1,0 +1,5 @@
+include fai/schema.sql
+graft fai/static
+graft fai/templates
+graft tests
+global-exclude *.pyc
