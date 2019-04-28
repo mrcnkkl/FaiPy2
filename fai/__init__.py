@@ -12,6 +12,8 @@ def create_app(config=None):
 
     @app.route('/')
     def test():
-        return '<h2>MRCN - deployed to heroku + {var}</h2>'.format(var=os.getenv('ZMIENNA'))
+
+
+        return '<h2>MRCN - deployed to heroku + {var}</h2>'.format(var=os.environ)
 
     return app
