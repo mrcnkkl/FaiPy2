@@ -14,6 +14,6 @@ def create_app(config=None):
     def test():
 
 
-        return '<h2>MRCN - deployed to heroku + {var}</h2>'.format(var=os.environ)
+        return '<h2>MRCN - deployed to heroku + {var}</h2>'.format(var=os.getenv('MRCN_TEST'))
 
     return app
