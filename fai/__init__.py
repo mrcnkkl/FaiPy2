@@ -12,7 +12,7 @@ def create_app(config=None):
 
     @app.route('/')
     def test():
-        return 'mrcn hello test 1'
+        return '<h2>MRCN - deployed to heroku</h2>'
 
     return app
 
