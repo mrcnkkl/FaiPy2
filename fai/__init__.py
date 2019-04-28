@@ -15,7 +15,3 @@ def create_app(config=None):
         return '<h2>MRCN - deployed to heroku</h2>'
 
     return app
-
-
-app = create_app()
-app.run()
