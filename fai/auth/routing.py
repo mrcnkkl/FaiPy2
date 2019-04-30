@@ -16,5 +16,5 @@ def login():
             return redirect(url_for('home.home'))
         else:
             flash('Nieprawidłowe hasło i/lub login', 'danger')
-            return redirect(url_for('authbp.login'))
+            return redirect(url_for('login.login'))
     return render_template('login.html', form=form)
