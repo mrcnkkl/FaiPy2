@@ -13,5 +13,8 @@ def login():
         if form.username.data == os.getenv('FAI_USER') \
                 and bcrypt.check_password_hash('$2b$12$OSa5/UxaG/lujCKhWvYUSuq.O/ggl4G9icoGAbgtvPAet/ow0n2Sy', form.password.data):
             flash('Jesteś zalogowany', 'success')
-        return redirect(url_for('home.home'))
+            return redirect(url_for('home.home'))
+        else:
+            flash('Nieprawidłowe hasło i/lub login', 'danger')
+            return redirect(url_for('authbp.login'))
     return render_template('login.html', form=form)
