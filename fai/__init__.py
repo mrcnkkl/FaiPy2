@@ -12,6 +12,10 @@ def create_app(config=None):
     app = Flask(__name__)
     login_manager.init_app(app)
 
+    @login_manager.user_loader
+    def load_user(user_id):
+        return None
+
     app.config.from_mapping(
         SECRET_KEY=os.getenv('FLASK_SECRET_KEY', default=None),
         # SECRET_KEY='secret',
