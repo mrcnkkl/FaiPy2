@@ -1,21 +1,27 @@
-from flask import (current_app, Blueprint, render_template, flash, redirect, url_for)
-from flask_login import UserMixin, login_user
+from flask import (Blueprint, render_template, flash, redirect, url_for, request,session, abort)
+from flask_login import login_user, current_user, logout_user, login_required
 from fai.auth.forms import LoginForm
-from fai import bcrypt, login_manager
-import os
+from fai import bcrypt
+import os, datetime
+from fai.auth.user import User
 
 authbp = Blueprint('login', __name__)
 
 
 @authbp.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('home.home'))
     form = LoginForm()
     if form.validate_on_submit():
         if form.username.data == os.getenv('FAI_USER') \
                 and bcrypt.check_password_hash('$2b$12$OSa5/UxaG/lujCKhWvYUSuq.O/ggl4G9icoGAbgtvPAet/ow0n2Sy', form.password.data):
-            user = User('user')
-            login_user(user)
+            user = User()
+            login_user(user, duration=datetime.timedelta(seconds=5))#, remember=True)
             flash('Jesteś zalogowany', 'success')
+            next = request.args.get('next')
+            if next is not None:
+                return abort(400)
             return redirect(url_for('home.home'))
         else:
             flash('Nieprawidłowe hasło i/lub login', 'danger')
@@ -23,12 +29,13 @@ def login():
     return render_template('login.html', form=form)
 
 
-class User(UserMixin):
+@authbp.route('/login', methods=['GET'])
+@login_required
+def logout():
+    current_user.is_authenticated = False
+    logout_user()
+    x = session
+    print(x)
+    form = LoginForm()
+    return redirect('login')
 
-    def __init__(self, role, id=0):
-        super().__init__()
-        self.role = role
-        self.id = id
-
-    def get_id(self):
-        return super().get_id()
