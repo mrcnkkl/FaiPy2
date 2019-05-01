@@ -18,7 +18,6 @@ def create_app(config=None):
         FLASK_ENV=os.getenv('FLASK_ENV', default='production')
     )
 
-    print('SECRET KEY: '  + app.config['SECRET_KEY'])
 
     login_manager.init_app(app)
 
