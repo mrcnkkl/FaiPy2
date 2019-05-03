@@ -25,7 +25,9 @@
                 <a href="{{ url_for('inv.invoice', id=invoice['id']) }}">
                     <button type="button" class="btn btn-outline-dark">Szczegóły</button>
                 </a>
-
+                <a href="{{ url_for('apac.placeorderform', id=invoice['id']) }}">
+                    <button type="button" class="btn btn-outline-dark">Do apaczki</button>
+                </a>
 
             </td>
         </tr>

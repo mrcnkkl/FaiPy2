@@ -37,8 +37,10 @@ def create_app(config=None):
     from fai.main.routing import homebp
     from fai.auth.routing import authbp
     from fai.fakt_client.routing import inv
+    from fai.apac_client.routing import apac
     app.register_blueprint(homebp)
     app.register_blueprint(authbp)
     app.register_blueprint(inv)
+    app.register_blueprint(apac)
 
     return app

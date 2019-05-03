@@ -10,9 +10,9 @@ def invoices(period):
     try:
         invoices = getinvoicelistofperiod(period)
     except:
+        #TODO
         print('_________________________')
     return render_template('invoices.html', invoices = invoices)
-
 
 
 @inv.route("/invoices/<id>")
