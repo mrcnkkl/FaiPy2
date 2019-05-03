@@ -1,0 +1,39 @@
+{%extends "layout.html" %}
+
+{% block content %}
+
+<hr>
+
+<div class="container">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Numer faktury</th>
+            <th scope="col">Nazwa kupującego</th>
+            <th scope="col">Data wystawienia faktury</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for invoice in invoices %}
+        <tr>
+            <td> {{ invoice['number'] }}</td>
+            <td> {{ invoice['buyer_name'] }}</td>
+            <td> {{ invoice['issue_date'] }}</td>
+            <!--                    <td><button class="btn btn-outline-info">Szczegóły</button></td>-->
+            <td>
+                <a href="{{ url_for('inv.invoice', id=invoice['id']) }}">
+                    <button type="button" class="btn btn-outline-dark">Szczegóły</button>
+                </a>
+
+
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+</div>
+
+<hr>
+{% endblock content %}
