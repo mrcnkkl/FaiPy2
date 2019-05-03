@@ -1,5 +1,5 @@
 import requests
-from fai.config import FaiConfigTEST as config
+from fai.config import FaiConfig as config
 
 
 def getinvoicelistofperiod(period: str) -> 'list':
