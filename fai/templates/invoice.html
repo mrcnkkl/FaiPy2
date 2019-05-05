@@ -1,0 +1,22 @@
+{%extends "layout.html" %}
+
+    {% block content %}
+<div class="container">
+<hr>
+
+    <p>Numer faktury: {{ invoice.number }} </p>
+    <p>Data sprzedaży: {{ invoice.sell_date }} </p>
+    <p>Sprzedawca: {{ invoice.seller_name }} </p>
+    <hr>
+    <h3>Klient</h3>
+    <p>Klient: {{ invoice.buyer_name }} </p>
+    <p>NIP: {{ invoice.buyer_tax_no }} </p>
+    <p>Kod pocztowy: {{ invoice.buyer_post_code }} </p>
+    <p>Miejscowość: {{ invoice.buyer_city }} </p>
+    <p>Ulica: {{ invoice.buyer_street }} </p>
+    <p>E-mail: {{ invoice.buyer_email }} </p>
+
+
+<hr>
+</div>
+    {% endblock content %}
