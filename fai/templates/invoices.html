@@ -22,12 +22,14 @@
             <td> {{ invoice['issue_date'] }}</td>
             <!--                    <td><button class="btn btn-outline-info">Szczegóły</button></td>-->
             <td>
-                <a href="{{ url_for('inv.invoice', id=invoice['id']) }}">
-                    <button type="button" class="btn btn-outline-dark">Szczegóły</button>
-                </a>
-                <a href="{{ url_for('apac.placeorderform', id=invoice['id']) }}">
-                    <button type="button" class="btn btn-outline-dark">Do apaczki</button>
-                </a>
+                <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                    <a href="{{ url_for('inv.invoice', id=invoice['id']) }}">
+                        <button type="button" class="btn btn-outline-dark">Szczegóły</button>
+                    </a>
+                    <a href="{{ url_for('apac.placeorderform', id=invoice['id']) }}">
+                        <button type="button" class="btn btn-outline-dark">Apaczka</button>
+                    </a>
+                </div>
 
             </td>
         </tr>
