@@ -11,7 +11,8 @@ def placeorderform(id: str):
     #     # print('if form.validate_on_submit():')
     #     apaclient.sendOrderRequest(form=form)
     # invoice = faktclient.getinvoicebyid(id=id)
-    return render_template(template_name_or_list='apacplaceorderform.html', form=form, invoice=None)#invoice)
+    # return render_template(template_name_or_list='apacplaceorderform.html', form=form, invoice=None)#invoice)
+    return render_template(template_name_or_list='test.html')#invoice)
 
 
 
