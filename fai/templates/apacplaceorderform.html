@@ -1,0 +1,358 @@
+{%extends "layout.html" %}
+
+{% block content %}
+
+<hr>
+
+<div class="container">
+
+    {% for field in form %}
+        {% for error in field.errors %}
+    <p>{{ field }}</p>
+    <p>{{ error }}</p>
+        {% endfor %}
+    {% endfor %}
+
+
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Apaczka - place order</legend>
+            <div class="form-group">
+                {{ form.accountNumber.label(class="form-control-label")}}
+                {{ form.accountNumber(class="form-control form-control-lg")}}
+
+            </div>
+            <div class="form-group">
+                {{ form.contents.label(class="form-control-label")}}
+                {{ form.contents(class="form-control form-control-lg")}}
+
+            </div>
+
+
+            <hr>
+
+            <div class="form-group">
+                {{ form.referenceNumber.label(class="form-control-label")}}
+                {{ form.referenceNumber(class="form-control form-control-lg", value='Faktura numer: ' +
+                invoice['number'])}}
+
+            </div>
+
+
+            <hr>
+
+
+            <p>Dane adresowe odbiorcy</p>
+            <div class="form-group">
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        {{ form.receiver_addressLine1.label(class="form-control-label") }}
+                        {{ form.receiver_addressLine1 (class="form-control form-control-sm",
+                        value=invoice['buyer_street']) }}
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        {{ form.receiver_addressLine2.label(class="form-control-label") }}
+                        {{ form.receiver_addressLine2 (class="form-control form-control-sm") }}
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        {{ form.receiver_city.label(class="form-control-label") }}
+                        {{ form.receiver_city (class="form-control form-control-sm", value=invoice['buyer_city'] )}}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        {{ form.receiver_contactName.label(class="form-control-label") }}
+                        {{ form.receiver_contactName (class="form-control form-control-sm", value=invoice['buyer_name'])
+                        }}
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        {{ form.receiver_countryId.label(class="form-control-label") }}
+                        {{ form.receiver_countryId (class="form-control form-control-sm") }}
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        {{ form.receiver_email.label(class="form-control-label") }}
+                        {{ form.receiver_email (class="form-control form-control-sm", value=invoice['buyer_email']) }}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        {{ form.receiver_name.label(class="form-control-label") }}
+                        {{ form.receiver_name (class="form-control form-control-sm", value=invoice['buyer_name']) }}
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        {{ form.receiver_phone.label(class="form-control-label") }}
+                        {{ form.receiver_phone (class="form-control form-control-sm", value=invoice['buyer_phone']) }}
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        {{ form.receiver_postalCode.label(class="form-control-label") }}
+                        {{ form.receiver_postalCode (class="form-control form-control-sm",
+                        value=invoice['buyer_post_code']) }}
+                    </div>
+                </div>
+            </div>
+
+
+            <hr>
+
+            <p>Dane adresowe nadawcy</p>
+            <div class="form-group">
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        {{ form.sender_addressLine1.label(class="form-control-label") }}
+                        {{ form.sender_addressLine1 (class="form-control form-control-sm") }}
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        {{ form.sender_addressLine2.label(class="form-control-label") }}
+                        {{ form.sender_addressLine2 (class="form-control form-control-sm") }}
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        {{ form.sender_city.label(class="form-control-label") }}
+                        {{ form.sender_city (class="form-control form-control-sm") }}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        {{ form.sender_contactName.label(class="form-control-label") }}
+                        {{ form.sender_contactName (class="form-control form-control-sm") }}
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        {{ form.sender_countryId.label(class="form-control-label") }}
+                        {{ form.sender_countryId (class="form-control form-control-sm") }}
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        {{ form.sender_email.label(class="form-control-label") }}
+                        {{ form.sender_email (class="form-control form-control-sm") }}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        {{ form.sender_name.label(class="form-control-label") }}
+                        {{ form.sender_name (class="form-control form-control-sm") }}
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        {{ form.sender_phone.label(class="form-control-label") }}
+                        {{ form.sender_phone (class="form-control form-control-sm") }}
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        {{ form.sender_postalCode.label(class="form-control-label") }}
+                        {{ form.sender_postalCode (class="form-control form-control-sm") }}
+                    </div>
+                </div>
+            </div>
+
+
+            <hr>
+
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    {{ form.isDomestic.label(class="form-control-label")}}
+                    {{ form.isDomestic(class="form-control form-control-lg")}}
+                </div>
+            </div>
+            <hr>
+
+
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    {{ form.notificationDelivered_isReceiverEmail.label(class="form-control-label") }}
+                    {{ form.notificationDelivered_isReceiverEmail(class="form-control form-control-sm") }}
+                </div>
+
+                <div class="form-group col-md-3">
+                    {{ form.notificationDelivered_isReceiverSms.label(class="form-control-label") }}
+                    {{ form.notificationDelivered_isReceiverSms(class="form-control form-control-sm") }}
+                </div>
+
+                <div class="form-group col-md-3">
+                    {{ form.notificationDelivered_isSenderEmail.label(class="form-control-label") }}
+                    {{ form.notificationDelivered_isSenderEmail(class="form-control form-control-sm") }}
+                </div>
+
+                <div class="form-group col-md-3">
+                    {{ form.notificationDelivered_isSenderSms.label(class="form-control-label") }}
+                    {{ form.notificationDelivered_isSenderSms(class="form-control form-control-sm") }}
+                </div>
+            </div>
+
+
+            <hr>
+
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    {{ form.notificationException_isReceiverEmail.label(class="form-control-label") }}
+                    {{ form.notificationException_isReceiverEmail(class="form-control form-control-sm") }}
+                </div>
+
+                <div class="form-group col-md-3">
+                    {{ form.notificationException_isReceiverSms.label(class="form-control-label") }}
+                    {{ form.notificationException_isReceiverSms(class="form-control form-control-sm") }}
+                </div>
+
+                <div class="form-group col-md-3">
+                    {{ form.notificationException_isSenderEmail.label(class="form-control-label") }}
+                    {{ form.notificationException_isSenderEmail(class="form-control form-control-sm") }}
+                </div>
+
+                <div class="form-group col-md-3">
+                    {{ form.notificationException_isSenderSms.label(class="form-control-label") }}
+                    {{ form.notificationException_isSenderSms(class="form-control form-control-sm") }}
+                </div>
+            </div>
+
+
+            <hr>
+
+
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    {{ form.notificationNew_isReceiverEmail.label(class="form-control-label") }}
+                    {{ form.notificationNew_isReceiverEmail(class="form-control form-control-sm") }}
+                </div>
+
+                <div class="form-group col-md-3">
+                    {{ form.notificationNew_isReceiverSms.label(class="form-control-label") }}
+                    {{ form.notificationNew_isReceiverSms(class="form-control form-control-sm") }}
+                </div>
+
+                <div class="form-group col-md-3">
+                    {{ form.notificationNew_isSenderEmail.label(class="form-control-label") }}
+                    {{ form.notificationNew_isSenderEmail(class="form-control form-control-sm") }}
+                </div>
+
+                <div class="form-group col-md-3">
+                    {{ form.notificationNew_isSenderSms.label(class="form-control-label") }}
+                    {{ form.notificationNew_isSenderSms(class="form-control form-control-sm") }}
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="form-row">
+                <div class="form-group col-sm-3">
+                    {{ form.notificationSent_isReceiverEmail.label(class="form-control-label") }}
+                    {{ form.notificationSent_isReceiverEmail(class="form-control form-control-sm")}}
+                </div>
+
+                <div class="form-group col-sm-3">
+                    {{ form.notificationSent_isReceiverSms.label(class="form-control-label") }}
+                    {{ form.notificationSent_isReceiverSms(class="form-control form-control-sm") }}
+                </div>
+
+                <div class="form-group col-sm-3">
+                    {{ form.notificationSent_isSenderEmail.label(class="form-control-label") }}
+                    {{ form.notificationSent_isSenderEmail(class="form-control form-control-sm") }}
+                </div>
+
+                <div class="form-group col-sm-3">
+                    {{ form.notificationSent_isSenderSms.label(class="form-control-label") }}
+                    {{ form.notificationSent_isSenderSms(class="form-control form-control-sm") }}
+                </div>
+            </div>
+            <hr>
+
+            <div class="form-group">
+                {{ form.options.label (class="form-control-label")}}
+                {{ form.options(multiple=True ,class="form-control form-control-md") }}
+            </div>
+
+
+            <div class="form-group">
+                {{ form.orderPickupType.label (class="form-control-label")}}
+                {{ form.orderPickupType(multiple=False ,class="form-control form-control-md") }}
+            </div>
+
+            <div class="form-group">
+                {{ form.pickupDate.label (class="form-control-label")}}
+                {{ form.pickupDate(class="form-control form-control-md") }}
+            </div>
+
+
+            <div class="form-group">
+                {{ form.pickupTimeFrom.label (class="form-control-label")}}
+                {{ form.pickupTimeFrom(class="form-control form-control-md") }}
+            </div>
+
+
+            <div class="form-group">
+                {{ form.pickupTimeTo.label (class="form-control-label")}}
+                {{ form.pickupTimeTo(class="form-control form-control-md") }}
+            </div>
+
+            <hr>
+
+
+            <hr>
+            <div class="form-group">
+                {{ form.serviceCode.label (class="form-control-label")}}
+                {{ form.serviceCode(multiple=False ,class="form-control form-control-md") }}
+            </div>
+
+            <hr>
+
+            <p>Dane przesyłki</p>
+            <div class="form-group">
+                {{ form.shipment_dimension1.label(class="form-control-label")}}
+                {{ form.shipment_dimension1(class="form-control form-control-lg")}}
+            </div>
+            <div class="form-group">
+                {{ form.shipment_dimension2.label(class="form-control-label")}}
+                {{ form.shipment_dimension2(class="form-control form-control-lg")}}
+            </div>
+            <div class="form-group">
+                {{ form.shipment_dimension3.label(class="form-control-label")}}
+                {{ form.shipment_dimension3(class="form-control form-control-lg")}}
+            </div>
+
+
+            <div class="form-group">
+                {{ form.shipment_options.label (class="form-control-label")}}
+                {{ form.shipment_options(multiple=False ,class="form-control form-control-md", value="") }}
+            </div>
+
+            <div class="form-group">
+                {{ form.shipment_position.label(class="form-control-label")}}
+                {{ form.shipment_position(class="form-control form-control-lg")}}
+            </div>
+
+            <div class="form-group">
+                {{ form.shipmentTypeCode.label (class="form-control-label")}}
+                {{ form.shipmentTypeCode(multiple=False ,class="form-control form-control-md") }}
+            </div>
+
+            <div class="form-group">
+                {{ form.shipmentValue.label(class="form-control-label")}}
+                {{ form.shipmentValue(class="form-control form-control-lg")}}
+            </div>
+
+            <div class="form-group">
+                {{ form.weight.label(class="form-control-label")}}
+                {{ form.weight(class="form-control form-control-lg")}}
+            </div>
+
+
+            <hr>
+            <br>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-primary")}}
+
+            </div>
+        </fieldset>
+
+    </form>
+</div>
+
+<hr>
+{% endblock content %}

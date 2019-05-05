@@ -1,8 +1,9 @@
 from fai.config import FaiConfig as config
 from fai import countries
 from fai.exceptions import ApacAuthenticationException
-
 from suds.client import Client
+import datetime
+
 
 class ApaClient:
 
@@ -17,96 +18,121 @@ class ApaClient:
         # ------END OF: create and check authorisation----------------------
 
     def sendOrderRequest(self, form):
-        placeOrderRequest = self.client.factory.create('ns0:PlaceOrderRequest')
+        place_order_request = self.client.factory.create('ns0:PlaceOrderRequest')
         order = self.client.factory.create('ns0:Order')
-        placeOrderRequest.authorization = self.auth
+        place_order_request.authorization = self.auth
 
-        order.accountNumber = form.accountNumber.data
+        # order.accountNumber = form.accountNumber.data
+        order.codAmount = None
         order.contents = form.contents.data
-        order.isDomestic = str(form.isDomestic.data).lower()
+        order.isDomestic = form.isDomestic.data
+        order.id = None
+        order.netAmount = None
 
-        order.notificationDelivered.isReceiverEmail = str(form.notificationDelivered_isReceiverEmail.data).lower()
-        order.notificationDelivered.isReceiverSms = str(form.notificationDelivered_isReceiverSms.data).lower()
-        order.notificationDelivered.isSenderEmail = str(form.notificationDelivered_isSenderEmail.data).lower()
-        order.notificationDelivered.isSenderSms = str(form.notificationDelivered_isSenderSms.data).lower()
+        notificationDelivered = self.client.factory.create('ns0:OrderNotification')
+        notificationDelivered.isReceiverEmail = str(form.notificationDelivered_isReceiverEmail.data).lower()
+        notificationDelivered.isReceiverSms = str(form.notificationDelivered_isReceiverSms.data).lower()
+        notificationDelivered.isSenderEmail = str(form.notificationDelivered_isSenderEmail.data).lower()
+        notificationDelivered.isSenderSms = str(form.notificationDelivered_isSenderSms.data).lower()
+        order.notificationDelivered = notificationDelivered
 
-        order.notificationException.isReceiverEmail = str(form.notificationException_isReceiverEmail.data).lower()
-        order.notificationException.isReceiverSms = str(form.notificationException_isReceiverSms.data).lower()
-        order.notificationException.isSenderEmail = str(form.notificationException_isSenderEmail.data).lower()
-        order.notificationException.isSenderSms = str(form.notificationException_isSenderSms.data).lower()
+        notificationException = self.client.factory.create('ns0:OrderNotification')
+        notificationException.isReceiverEmail = str(form.notificationException_isReceiverEmail.data).lower()
+        notificationException.isReceiverSms = str(form.notificationException_isReceiverSms.data).lower()
+        notificationException.isSenderEmail = str(form.notificationException_isSenderEmail.data).lower()
+        notificationException.isSenderSms = str(form.notificationException_isSenderSms.data).lower()
+        order.notificationException = notificationException
 
-        order.notificationNew.isReceiverEmail = str(form.notificationNew_isReceiverEmail.data).lower()
-        order.notificationNew.isReceiverSms = str(form.notificationNew_isReceiverSms.data).lower()
-        order.notificationNew.isSenderEmail = str(form.notificationNew_isSenderEmail.data).lower()
-        order.notificationNew.isSenderSms = str(form.notificationNew_isSenderSms.data).lower()
+        notificationNew = self.client.factory.create('ns0:OrderNotification')
+        notificationNew.isReceiverEmail = str(form.notificationNew_isReceiverEmail.data).lower()
+        notificationNew.isReceiverSms = str(form.notificationNew_isReceiverSms.data).lower()
+        notificationNew.isSenderEmail = str(form.notificationNew_isSenderEmail.data).lower()
+        notificationNew.isSenderSms = str(form.notificationNew_isSenderSms.data).lower()
+        order.notificationNew = notificationNew
 
-        order.notificationSent.isReceiverEmail = str(form.notificationSent_isReceiverEmail.data).lower()
-        order.notificationSent.isReceiverSms = str(form.notificationSent_isReceiverSms.data).lower()
-        order.notificationSent.isSenderEmail = str(form.notificationSent_isSenderEmail.data).lower()
-        order.notificationSent.isSenderSms = str(form.notificationSent_isSenderSms.data).lower()
+        notificationSent = self.client.factory.create('ns0:OrderNotification')
+        notificationSent.isReceiverEmail = str(form.notificationSent_isReceiverEmail.data).lower()
+        notificationSent.isReceiverSms = str(form.notificationSent_isReceiverSms.data).lower()
+        notificationSent.isSenderEmail = str(form.notificationSent_isSenderEmail.data).lower()
+        notificationSent.isSenderSms = str(form.notificationSent_isSenderSms.data).lower()
+        order.notificationSent.isSenderSms = notificationSent
 
-        order.options = form.options.data
+        # options = self.client.factory.create('ns0:ArrayOfString')  # niedobowiązkowe
+        # options.data = form.options.data
+        # order.options = options
+
         order.orderPickupType = form.orderPickupType.data
+
+        #
+        # pudlist = [int(x) * 1 for x in form.pickupDate.data.split('-')]
+        # order.pickupDate = datetime.datetime(*pudlist)
+
+        # pudlist = [int(x) * 1 for x in form.pickupDate.data.split('-')]
         order.pickupDate = form.pickupDate.data
-        order.pickupTimeFrom = form.pickupTimeFrom.data
-        order.pickupTimeTo = form.pickupTimeTo.data
 
-        order.receiver.addressLine1 = form.receiver_addressLine1.data
-        order.receiver.addressLine2 = form.receiver_addressLine2.data
-        order.receiver.city = form.receiver_city.data
-        order.receiver.contactName = form.receiver_contactName.data
-        order.receiver.countryId = form.receiver_countryId.data
-        order.receiver.email = form.receiver_email.data
-        order.receiver.name = form.receiver_name.data
-        order.receiver.phone = form.receiver_phone.data
-        order.receiver.postalCode = form.receiver_postalCode.data
+        puttlist = [int(x) * 1 for x in form.pickupTimeTo.data.split(':')]
+        order.pickupTimeTo = datetime.time(*puttlist).strftime("%H:%M")
 
-        order.referenceNumber = form.referenceNumber.data
+        putflist = [int(x) * 1 for x in form.pickupTimeFrom.data.split(':')]
+        order.pickupTimeFrom = datetime.time(*putflist).strftime("%H:%M")
 
-        order.sender.addressLine1 = form.sender_addressLine1.data
-        order.sender.addressLine2 = form.sender_addressLine2.data
-        order.sender.city = form.sender_city.data
-        order.sender.contactName = form.sender_contactName.data
-        order.sender.countryId = form.sender_countryId.data
-        order.sender.email = form.sender_email.data
-        order.sender.name = form.sender_name.data
-        order.sender.phone = form.sender_phone.data
-        order.sender.postalCode = form.sender_postalCode.data
+        receiver = self.client.factory.create('ns0:orderAddress')
+        receiver.addressLine1 = form.receiver_addressLine1.data
+        receiver.addressLine2 = form.receiver_addressLine2.data
+        receiver.city = form.receiver_city.data
+        receiver.contactName = form.receiver_contactName.data
+        receiver.countryId = form.receiver_countryId.data
+        receiver.email = form.receiver_email.data
+        receiver.name = form.receiver_name.data
+        receiver.phone = form.receiver_phone.data
+        receiver.postalCode = form.receiver_postalCode.data
+        order.receiver = receiver
+
+        # order.referenceNumber = form.referenceNumber.data
+
+        sender = self.client.factory.create('ns0:orderAddress')
+        sender.addressLine1 = form.sender_addressLine1.data
+        sender.addressLine2 = form.sender_addressLine2.data
+        sender.city = form.sender_city.data
+        sender.contactName = form.sender_contactName.data
+        sender.countryId = form.sender_countryId.data
+        sender.email = form.sender_email.data
+        sender.name = form.sender_name.data
+        sender.phone = form.sender_phone.data
+        sender.postalCode = form.sender_postalCode.data
+        order.sender = sender
 
         order.serviceCode = form.serviceCode.data
 
+        shipments = self.client.factory.create('ns0:ArrayOfShipment')
         shipment = self.client.factory.create('ns0:Shipment')
-        #
-        # shipment.dimension1 = Decimal(form.shipment_dimension1.data)/1
-        # shipment.dimension2 = Decimal(form.shipment_dimension2.data)/1
-        # shipment.dimension3 = Decimal(form.shipment_dimension3.data)/1
+        shipment_options = self.client.factory.create('ns0:ArrayOfString')
 
-        shipment.dimension1 = 20
-        shipment.dimension2 = 30
-        shipment.dimension3 = 15
+        shipment.dimension1 = form.shipment_dimension1.data
+        shipment.dimension2 = form.shipment_dimension2.data
+        shipment.dimension3 = form.shipment_dimension3.data
 
-        # shipment.options = form.shipment_options.data
-        shipment.options = None
-        # shipment.position = Decimal(form.shipment_position.data)
+        # shipment_options = form.shipment_options.data
+
+        shipment.options = shipment_options
         shipment.position = 0
-        # shipment.shipmentTypeCode = form.shipmentTypeCode.data
-        shipment.shipmentTypeCode = 'PACZ'
-        # shipment.shipmentValue = Decimal(form.shipmentValue.data)
-        shipment.weight = 1
+        shipment.shipmentTypeCode = form.shipmentTypeCode.data
+        shipment.shipmentValue = form.shipmentValue.data
+        shipment.weight = form.weight.data
+        shipments.Shipment.append(shipment)
 
-        order.shipments = []
-        order.shipments.append(shipment)
+        order.shipments = shipments
 
-        placeOrderRequest.order = order
 
-        placeOrderRequest.authorization.apiKey = 'Apaczka2019'
-        placeOrderRequest.authorization.login = 'biuro@viti.com.pl'
-        placeOrderRequest.authorization.password = 'VIti1234'
+        place_order_request.order = order
 
-        print(placeOrderRequest)
 
-        response = self.client.service.placeOrder(placeOrderRequest)
+        response = self.client.service.placeOrder(place_order_request)
         print(response)
+        return response
+
+
+
 
     def getcountry(self, country: str):
         countdict = countries.get(country)
@@ -130,49 +156,3 @@ class Authorisation:
 class OrderRequest:
     def __init__(self, auth, order):
         pass
-
-# client = ApaClient()
-# print(client)
-#
-# soapclient = client.client
-# print(soapclient)
-#
-# auth = soapclient.factory.create('ns0:Authorization')
-# auth.apiKey = 'Apaczka2019'
-# auth.login = 'biuro@viti.com.pl'
-# auth.password ='VIti1234'
-#
-# placeOrderRequest = soapclient.factory.create('ns0:PlaceOrderRequest')
-# placeOrderRequest.authorization = auth
-# print(placeOrderRequest)
-#
-# resp = soapclient.service.placeOrder(placeOrderRequest)
-# print(resp)
-
-# shipment = client.client.factory.create('ns0:Shipment')
-# print(client.client)
-# # print(client.order)
-# orderrequest = client.placeorderrequest()
-# print(orderrequest)
-# country = client.getcountry('Polska')
-# print(country)
-#
-# # print(client)
-# # countryRequest = client.factory.create('ns0:CountryRequest')
-# # auth = client.factory.create('ns0:Authorization')
-# # auth.apiKey = f'{conf.apacapikey}'
-# # auth.login = f'{conf.apaclogin}'
-# # auth.password = f'{conf.apacpassword}'
-# # countryRequest.authorization = auth
-# #
-# #
-# # print(countryRequest)
-#
-#
-# #
-# #
-# # auth_response = client.service.validateAuthData(auth)
-# # count_response = client.service.getCountries(countryRequest)
-# # print(auth_response)
-# # print(count_response)
-# print('END')
