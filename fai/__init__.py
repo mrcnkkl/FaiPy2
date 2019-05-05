@@ -2,9 +2,10 @@ import os, datetime
 from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
+
 bcrypt = Bcrypt()
 login_manager = LoginManager()
-login_manager.login_view = 'login.login'
+login_manager.login_view = 'auth.login'
 login_manager.login_message_category = 'secondary'
 login_manager.login_message = 'Zaloguj się aby przejść dalej'
 from fai.auth.user import User
@@ -36,7 +37,11 @@ def create_app(config=None):
 
     from fai.main.routing import homebp
     from fai.auth.routing import authbp
+    from fai.fakt_client.routing import inv
+    from fai.apac_client.routing import apac
     app.register_blueprint(homebp)
     app.register_blueprint(authbp)
+    app.register_blueprint(inv)
+    app.register_blueprint(apac)
 
     return app

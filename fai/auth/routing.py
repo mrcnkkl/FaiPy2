@@ -5,7 +5,7 @@ from fai import bcrypt
 import os, datetime
 from fai.auth.user import User
 
-authbp = Blueprint('login', __name__)
+authbp = Blueprint('auth', __name__)
 
 
 @authbp.route('/login', methods=['GET', 'POST'])
