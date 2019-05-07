@@ -3,6 +3,7 @@ from fai import countries
 from fai.exceptions import ApacAuthenticationException
 from suds.client import Client
 import datetime
+import inspect
 
 
 class ApaClient:
@@ -59,15 +60,20 @@ class ApaClient:
         notificationSent.isSenderSms = form.notificationSent_isSenderSms.data
         order.notificationSent = notificationSent
 
-#------------------DONE----------------------------------------------------------------------------------------------
 
 
 
 
         options = self.client.factory.create('ns0:ArrayOfString')  # niedobowiązkowe
-        # print(type(options.string))  --> <class 'list'>
+        options = form.options.data
+        order.options = options
+        order.orderPickupType = form.orderPickupType.data
 
-        order.orderPickupType = 'COURIER'
+
+
+
+
+#------------------DONE----------------------------------------------------------------------------------------------
 
         receiver = self.client.factory.create('ns0:orderAddress')
         receiver.addressLine1 = ' --TEST-- '
@@ -127,9 +133,15 @@ class ApaClient:
         place_order_request.order = order
         # print(place_order_request)
 
+        with open('place_order_request.txt', mode='w+') as por:
+            por.write(str(place_order_request))
+
         response = None
         response = self.client.service.placeOrder(place_order_request)
         print(response)
+
+        with open('response.txt', mode='w+') as res:
+            res.write(str(response))
         return response
 
         #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
