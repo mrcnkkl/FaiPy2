@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, SubmitField, BooleanField, SelectMultipleField, DateField, DateTimeField
 from wtforms.validators import DataRequired, Length
+import datetime
 
 
 class ApaczkaPlaceOrderRequestForm(FlaskForm):
@@ -9,7 +10,7 @@ class ApaczkaPlaceOrderRequestForm(FlaskForm):
                                 default='')
     contents = StringField(label='Zawartość przesyłki', description='Zawartość przesyłki',
                            validators=[DataRequired('To pole jest obowiązkowe'), Length(max=35)],
-                           default='Siłownik hydrauliczny + osprzęt')
+                           default='części metalowe ')
     isDomestic = BooleanField(label='Czy przesyłka krajowa?', description='Czy przesyłka krajowa?', default=True)
 
     notificationDelivered_isReceiverEmail = BooleanField(
@@ -67,11 +68,11 @@ class ApaczkaPlaceOrderRequestForm(FlaskForm):
                                   choices=[('COURIER', 'COURIER - zamówienie odbioru przesyłek'),
                                            ('SELF', 'SELF – dostarczenie samodzielnie do kuriera'),
                                            ('BOX_MACHINE', 'BOX_MACHINE – dostarczenie samodzielnie do paczkomatu')
-                                           ], default='')
+                                           ], default='SELF')
 
     pickupDate = DateField(
         label='Data odbioru przesyłki przez kuriera.Wymagane dla orderPickupType = COURIER. (FORMAT: YYYY-MM-DD)',
-        format='%Y-%m-%d')
+        format='%Y-%m-%d', default=datetime.date(year=2025, month=12, day=31))
 
     pickupTimeFrom = StringField(
         label='Początek przedziału godzinowego, w którym kurier ma odebrać przesyłkę. Wymagane dla orderPickupType = COURIER. (FORMAT: HH:MM)',
@@ -141,7 +142,7 @@ class ApaczkaPlaceOrderRequestForm(FlaskForm):
         ('APACZKA_DE', 'APACZKA_DE - Apaczka Niemcy'),
         ('PACZKOMAT', 'PACZKOMAT - Paczkomaty'),
         ('GLS', 'GLS - GLS zagranica'),
-    ])
+    ], default='FEDEX')
 
     shipment_dimension1 = StringField(label='Długość cm.', default=30,
                                       validators=[DataRequired('To pole jest obowiązkowe')])
@@ -169,12 +170,12 @@ class ApaczkaPlaceOrderRequestForm(FlaskForm):
             ('LIST', 'LIST - koperta'),
             ('PACZ', 'PACZ - paczka'),
             ('PALETA', 'PALETA - 2 wymiary stałe 120 x 80'),
-        ])
+        ], default='PACZ')
 
     shipmentValue = StringField(
         label='Wartość przysyłki w GROSZACH (do ubezpieczenia). Wymagane, gdy podano opcję UBEZP.', default='0')
 
-    weight = StringField(label='Waga przesyłki (w kg).', default='10',
+    weight = StringField(label='Waga przesyłki (w kg).', default='30',
                          validators=[DataRequired('To pole jest obowiązkowe')])
 
     submit = SubmitField('Wyślij')
