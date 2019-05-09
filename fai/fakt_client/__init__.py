@@ -19,3 +19,8 @@ def getclientbyid(id: str):
     URL = f'https://{config.fakt_domain}.fakturownia.pl/clients/{id}.json?api_token={config.fakt_token}'
     response = requests.get(URL)
     return  response.json()
+
+def getinvoicebyiddotreplaced(id: str):
+    URL = f'https://{config.fakt_domain}.fakturownia.pl/invoices/{id}.json?api_token={config.fakt_token}'
+    response = requests.get(URL)
+    return response.json()

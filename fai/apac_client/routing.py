@@ -13,7 +13,8 @@ def placeorderform(id: str):
     if form.validate_on_submit():
         #TODO
         try:
-            apaclient.sendOrderRequest(form=form)
+            response = apaclient.sendOrderRequest(form=form)
+            return render_template(template_name_or_list='apacresponse.html', response=response)
         except Exception:
             print(Exception)
     invoice = getinvoicebyid(id=id)

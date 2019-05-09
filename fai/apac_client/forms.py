@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, SubmitField, BooleanField, SelectMultipleField, DateField, DateTimeField
+from wtforms import StringField, SelectField, SubmitField, BooleanField, SelectMultipleField, DateField, DateTimeField, TimeField
 from wtforms.validators import DataRequired, Length
 import datetime
 
@@ -74,13 +74,13 @@ class ApaczkaPlaceOrderRequestForm(FlaskForm):
         label='Data odbioru przesyłki przez kuriera.Wymagane dla orderPickupType = COURIER. (FORMAT: YYYY-MM-DD)',
         format='%Y-%m-%d', default=datetime.date(year=2025, month=12, day=31))
 
-    pickupTimeFrom = StringField(
+    pickupTimeFrom = TimeField(
         label='Początek przedziału godzinowego, w którym kurier ma odebrać przesyłkę. Wymagane dla orderPickupType = COURIER. (FORMAT: HH:MM)',
-        default='09:00')
+        default=datetime.time(hour=9))
 
-    pickupTimeTo = StringField(
+    pickupTimeTo = TimeField(
         label='Koniec przedziału godzinowego, w którym kurier ma odebrać przesyłkę. Wymagane dla orderPickupType = COURIER. (FORMAT: HH:MM)',
-        default='14:00')
+        default=datetime.time(hour=14))
 
     receiver_addressLine1 = StringField(label='Pierwsza linia adresu',
                                         validators=[DataRequired('To pole jest obowiązkowe')])
@@ -88,7 +88,12 @@ class ApaczkaPlaceOrderRequestForm(FlaskForm):
     receiver_city = StringField(label='Miasto', validators=[DataRequired('To pole jest obowiązkowe')])
     receiver_contactName = StringField(label='Imię i nazwisko osoby kontaktowej',
                                        validators=[DataRequired('To pole jest obowiązkowe')])
-    receiver_countryId = StringField(label='Identyfikator kraju', validators=[DataRequired('To pole jest obowiązkowe')])
+    # receiver_countryId = StringField(label='Identyfikator kraju', validators=[DataRequired('To pole jest obowiązkowe')], default=0)
+
+    receiver_countryId = SelectField(label='Identyfikator kraju',
+                                   default=0, choices=[
+            ('0', 'Polska'),
+        ])
     receiver_email = StringField(label='Adres email', validators=[DataRequired('To pole jest obowiązkowe')])
     receiver_name = StringField(label='Nazwa odbiorcy (nazwa firmy)',
                                 validators=[DataRequired('To pole jest obowiązkowe')])
@@ -107,8 +112,12 @@ class ApaczkaPlaceOrderRequestForm(FlaskForm):
                               default='Bielsko-Biała')
     sender_contactName = StringField(label='Imię i nazwisko osoby kontaktowej',
                                      validators=[DataRequired('To pole jest obowiązkowe')], default='Rafał Plewa')
-    sender_countryId = StringField(label='Identyfikator kraju', validators=[DataRequired('To pole jest obowiązkowe')],
-                                   default=0)
+    # sender_countryId = StringField(label='Identyfikator kraju', validators=[DataRequired('To pole jest obowiązkowe')],
+    #                                default=0)
+    sender_countryId = SelectField(label='Identyfikator kraju', validators=[DataRequired('To pole jest obowiązkowe')],
+                                   default=0, choices=[
+            ('0', 'Polska'),
+        ])
     sender_email = StringField(label='Adres email', validators=[DataRequired('To pole jest obowiązkowe')],
                                default='biuro@viti.com.pl')
     sender_name = StringField(label='Nazwa nadawcy', validators=[DataRequired('To pole jest obowiązkowe')],
